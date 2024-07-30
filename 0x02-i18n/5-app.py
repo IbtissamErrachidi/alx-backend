@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
 """
-Flask app with mock user login
+Flask app
 """
-from flask import Flask, render_template, request, g
+from flask import (
+    Flask,
+    render_template,
+    request,
+)
 from flask_babel import Babel
 
-app = Flask(__name__)
-app.config['BABEL_DEFAULT_LOCALE'] = 'en'
-app.config['BABEL_DEFAULT_TIMEZONE'] = 'UTC'
-
-babel = Babel(app)
 
 users = {
     1: {"name": "Balou", "locale": "fr", "timezone": "Europe/Paris"},
@@ -18,29 +17,49 @@ users = {
     4: {"name": "Teletubby", "locale": None, "timezone": "Europe/London"},
 }
 
-def get_user() -> dict:
+
+class Config(object):
     """
-    Get user from URL parameter 'login_as'.
+    Configuration for Babel
     """
-    user_id = request.args.get('login_as')
-    if user_id:
-        user_id = int(user_id)
-        return users.get(user_id)
+    LANGUAGES = ["en", "fr"]
+    BABEL_DEFAULT_LOCALE = "en"
+    BABEL_DEFAULT_TIMEZONE = "UTC"
+
+
+app = Flask(__name__)
+app.config.from_object(Config)
+babel = Babel(app)
+
+
+def get_user():
+    """
+    Returns a user dictionary or None if ID value can't be found
+    or if 'login_as' URL parameter was not found
+    """
+    id = request.args.get('login_as', None)
+    if id is not None and int(id) in users.keys():
+        return users.get(int(id))
     return None
 
-@app.before_request
-def before_request() -> None:
-    """
-    Set user before processing request.
-    """
-    g.user = get_user()
 
-@app.route('/')
+@app.before_request
+def before_request():
+    """
+    Add user to flask.g if user is found
+    """
+    user = get_user()
+    g.user = user
+
+
+
+@app.route('/', strict_slashes=False)
 def index() -> str:
     """
-    Handle home page.
+    Handles / route
     """
     return render_template('5-index.html')
+
 
 if __name__ == "__main__":
     app.run(port="5000", host="0.0.0.0", debug=True)
