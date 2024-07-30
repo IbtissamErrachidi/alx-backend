@@ -52,16 +52,6 @@ def before_request():
     g.user = user
 
 
-@babel.localeselector
-def get_locale():
-    """
-    Select and return best language 
-    """
-    loc = request.args.get('locale')
-    if loc in app.config['LANGUAGES']:
-        return loc
-    return request.accept_languages.best_match(app.config['LANGUAGES'])
-
 
 @app.route('/', strict_slashes=False)
 def index() -> str:
