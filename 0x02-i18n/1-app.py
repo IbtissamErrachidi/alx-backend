@@ -19,7 +19,7 @@ app.config.from_object(Config)
 
 babel = Babel(app)
 
-@app.route('/', strict_slashes=False)
+@app.route('/')
 def index():
     """
     Handles the root route
