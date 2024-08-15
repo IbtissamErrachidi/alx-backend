@@ -7,6 +7,7 @@ import csv
 import math
 from typing import List, Dict
 
+
 class Server:
     """Server class to paginate a database of popular baby names."""
     DATA_FILE = "Popular_Baby_Names.csv"
@@ -34,16 +35,16 @@ class Server:
         return self.__indexed_dataset
 
     def get_hyper_index(self, index: int = None, page_size: int = 10) -> Dict:
-        """Returns a dictionary with the details of pagination resilient to deletions."""
+        """Returns a dictionary with the details"""
         assert isinstance(index, int) and index >= 0
         assert isinstance(page_size, int) and page_size > 0
-        
+
         dataset = self.indexed_dataset()
         data = []
         for i in range(index, index + page_size):
             if i in dataset:
                 data.append(dataset[i])
-        
+
         next_index = index + page_size if len(data) == page_size else None
 
         return {
@@ -52,4 +53,3 @@ class Server:
             'page_size': page_size,
             'next_index': next_index
         }
-
