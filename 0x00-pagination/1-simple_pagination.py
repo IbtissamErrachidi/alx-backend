@@ -7,6 +7,7 @@ import csv
 from typing import List
 index_range = __import__('0-simple_helper_function').index_range
 
+
 class Server:
     """Server class to paginate a database of popular baby names."""
     DATA_FILE = "Popular_Baby_Names.csv"
@@ -32,19 +33,12 @@ class Server:
         page (int): The page number to retrieve (1-indexed).
         page_size (int): The number of items per page.
 
-        Returns:
-        List[List]: A list of lists representing the rows of the dataset for the requested page.
         """
-        # Validate arguments
-        assert isinstance(page, int) and page > 0, "Page must be a positive integer"
-        assert isinstance(page_size, int) and page_size > 0, "Page size must be a positive integer"
+        assert isinstance(page, int) and page > 0,
+        assert isinstance(page_size, int) and page_size > 0,
 
-        # Get the start and end index for pagination
         start_index, end_index = index_range(page, page_size)
-        
-        # Retrieve the dataset
-        data = self.dataset()
-        
-        # Return the page of data
-        return data[start_index:end_index]
 
+        data = self.dataset()
+
+        return data[start_index:end_index]
