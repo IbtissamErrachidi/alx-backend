@@ -17,7 +17,6 @@ class LIFOCache(BaseCaching):
             return
 
         if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
-            # Remove the last item added (LIFO)
             last_key = next(reversed(self.cache_data))
             del self.cache_data[last_key]
             print(f"DISCARD: {last_key}")
@@ -28,4 +27,4 @@ class LIFOCache(BaseCaching):
         """ Get an item by key """
         if key is None:
             return None
-        return self.cache_data.get(key, None)
+        return self.cache_data.get(key)
