@@ -31,7 +31,7 @@ class Server:
     def assert_positive_integer_type(value: int) -> None:
         """
         Asserts that the value is a positive integer.
-        """ 
+        """
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
         """
         Returns a page of the dataset.
